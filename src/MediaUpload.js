@@ -1,23 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
 import { storage, db } from "./firebase";
-import './ImageUpload.css';
+import './MediaUpload.css';
 
-function ImageUpload({username}) {
+function MediaUpload({username}) {
     const [caption, setCaption] = useState('');
     const [progress, setProgress] = useState(0);
-    const [image, setImage] = useState(null);
+    const [media, setMedia] = useState(null);
+    const [mediaType, setMediaType] = useState('');
+
+    useEffect(() => {
+        if (media && media.type.match('image.*')) {
+            setMediaType('image');
+        } else if (media && media.type.match('video.*')) {
+            setMediaType('video');
+        }
+    }, [media]);
 
     const handleChange = (event) => {
         if (event.target.files[0]) {
-            setImage(event.target.files[0]);
+            setMedia(event.target.files[0]);
         }
     };
 
     const handleUpload = () => {
         // based on file type, store the file in the images or video folder
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        const uploadTask = storage.ref(`media/${media.name}`).put(media);
         uploadTask.on(
             "state_changed",
             (snapshot) => {
@@ -34,29 +43,30 @@ function ImageUpload({username}) {
             () => {
                 // complete function...
                 storage
-                    .ref("images")
-                    .child(image.name)
+                    .ref("media")
+                    .child(media.name)
                     .getDownloadURL()
                     .then(url => {
-                        // post image inside db
+                        // post media inside db
                         db.collection("posts").add({
                             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                             caption: caption,
-                            imageUrl: url,
+                            mediaUrl: url,
+                            mediaType: mediaType,
                             username: username
                         });
                     });
 
                     setProgress(0);
                     setCaption("");
-                    setImage(null);
+                    setMedia(null);
             }
         )
     };
 
     return (
-        <div className="imageupload">
-            <progress className="imageupload__progress" value={progress} max="100" />
+        <div className="mediaupload">
+            <progress className="mediaupload__progress" value={progress} max="100" />
             <input 
                 type="text"
                 placeholder="Enter a caption..."
@@ -69,4 +79,4 @@ function ImageUpload({username}) {
     );
 }
 
-export default ImageUpload;
+export default MediaUpload;

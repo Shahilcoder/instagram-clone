@@ -5,7 +5,7 @@ import { Button, Input } from "@material-ui/core";
 
 import './App.css';
 import Post from "./Post";
-import ImageUpload from "./ImageUpload";
+import MediaUpload from "./MediaUpload";
 import { db, auth } from "./firebase";
 
 function getModalStyle() {
@@ -194,12 +194,21 @@ function App() {
 
       <div className="app__posts">
         {
-          posts.map(({id, post}) => <Post key={id} postId={id} user={user} username={post.username} imageUrl={post.imageUrl} caption={post.caption}/>)
+          posts.map(({id, post}) => (
+            <Post 
+              key={id}
+              postId={id}
+              user={user} 
+              username={post.username} 
+              mediaUrl={post.mediaUrl} 
+              mediaType={post.mediaType}
+              caption={post.caption}/>)
+          )
         }
       </div>
 
       {user ? (
-        <ImageUpload username={user.displayName} />
+        <MediaUpload username={user.displayName} />
       ): (
         <h3 className="sorry">Sign Up or Login to Upload Content</h3>
       )}

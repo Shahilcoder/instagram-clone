@@ -7,7 +7,7 @@
     margin-right: auto;
 }
 
-.post__image {
+.post__image, .post__video {
     width: 100%;
     object-fit: contain;
     border-top: 1px solid lightgray;

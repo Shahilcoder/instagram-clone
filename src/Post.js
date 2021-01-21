@@ -4,7 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import firebase from "firebase";
 import { db } from "./firebase";
 
-function Post({postId, user, username, imageUrl, caption}) {
+function Post({postId, user, username, mediaUrl, mediaType, caption}) {
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
 
@@ -49,7 +49,13 @@ function Post({postId, user, username, imageUrl, caption}) {
                 <h3>{username}</h3>
             </div>
 
-            <img className="post__image" src={imageUrl} alt="" />
+            {mediaType === "image" && <img className="post__image" src={mediaUrl} alt="" />}
+            {mediaType === "video" && (
+                <video className="post__video" controls>
+                    <source src={mediaUrl} type="video/*" />
+                    Your browser does not support video tag.
+                </video>
+            )}
 
             <h4 className={`post__text ${comments.length > 0 && " with_border"}`}><b>{username}: </b> {caption}</h4>
             
