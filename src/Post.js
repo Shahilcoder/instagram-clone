@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Post.css";
 import Avatar from "@material-ui/core/Avatar";
+import ReactPlayer from "react-player";
 import firebase from "firebase";
 import { db } from "./firebase";
 
@@ -43,19 +44,14 @@ function Post({postId, user, username, mediaUrl, mediaType, caption}) {
             <div className="post__header">
                 <Avatar
                     className="post__avatar"
-                    alt="User"
+                    alt={username}
                     src="/static/images/avatar/1.png"
                 />
                 <h3>{username}</h3>
             </div>
 
             {mediaType === "image" && <img className="post__image" src={mediaUrl} alt="" />}
-            {mediaType === "video" && (
-                <video className="post__video" controls>
-                    <source src={mediaUrl} type="video/*" />
-                    Your browser does not support video tag.
-                </video>
-            )}
+            {mediaType === "video" && <ReactPlayer width="100%" controls url={mediaUrl} />}
 
             <h4 className={`post__text ${comments.length > 0 && " with_border"}`}><b>{username}: </b> {caption}</h4>
             

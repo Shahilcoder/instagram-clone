@@ -10,6 +10,16 @@
     border-top: 1px solid lightgray; */
 }
 
+.mediaupload h3 {
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.mediaupload__input {
+    margin-bottom: 5px;
+}
+
 .mediaupload__progress {
     width: 100%;
+    /* background-color: red; */
 }

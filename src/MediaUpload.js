@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@material-ui/core";
+import { Button, Input, LinearProgress } from "@material-ui/core";
 import firebase from "firebase";
 import { storage, db } from "./firebase";
 import './MediaUpload.css';
@@ -66,8 +66,10 @@ function MediaUpload({username}) {
 
     return (
         <div className="mediaupload">
-            <progress className="mediaupload__progress" value={progress} max="100" />
-            <input 
+            <h3>Upload Yours</h3>
+            <LinearProgress variant="determinate" className="mediaupload__progress" value={progress} />
+            <Input 
+                className="mediaupload__input"
                 type="text"
                 placeholder="Enter a caption..."
                 value={caption}
